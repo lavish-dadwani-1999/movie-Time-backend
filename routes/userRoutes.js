@@ -36,8 +36,8 @@ router.post(
      console.log(token)
      let html = `
      <h1>Welcome To Star App</h1>
-     <p>Thanks For Creating An Account.  Click <a href="http://localhost:3000/user/verifyEmail/${token}">here</a> To Confirm Your Account.</p>
-     <p> or copy paste this link http://localhost:3000/user/verifyEmail/${token}</p>
+     <p>Thanks For Creating An Account.  Click <a href="https://movie2time.herokuapp.com/user/verifyEmail/${token}">here</a> To Confirm Your Account.</p>
+     <p> or copy paste this link https://movie2time.herokuapp.com/user/verifyEmail/${token}</p>
      `
      sendMailToUser(user1.email,"Confirm Email",html)
     //  const watchList = new WatchList({userId:user1._id})
@@ -120,8 +120,8 @@ router.post("/user/emailVerification/:email/:token", async (req,res)=>{
     const user = await User.findOne({ email:email})
     if(!user)return res.status(404).send({message:"Email Required"})
     let html = `<h1>Welcome To Star App</h1>
-    <p>Thanks For Creating An Account.  Click <a href="http://localhost:3000/user/verifyEmail/${token}">here</a> To Confirm Your Account.</p>
-    <p> or copy paste this link http://localhost:3000/user/verifyEmail/${token}</p>
+    <p>Thanks For Creating An Account.  Click <a href="https://movie2time.herokuapp.com/user/verifyEmail/${token}">here</a> To Confirm Your Account.</p>
+    <p> or copy paste this link https://movie2time.herokuapp.com/user/verifyEmail/${token}</p>
    `
    sendMailToUser(user.email,"Confirm Email",html)
    res.status(200).send({message:`Email verification link Has been sent to ${user.email} `})
@@ -268,7 +268,7 @@ router.post("/forgotPasswordByEmail/:email", async (req,res)=>{
      " >
         <h1>Movie Times </h1>
         <div style="font-size: 20px;">
-            <p>Hello ${user.name} a password reset link is genrated from your account Click <a href="http://localhost:3001/forgotpassword2/${token}">here</a> to reset your password</p>
+            <p>Hello ${user.name} a password reset link is genrated from your account Click <a href="https://awesome-saha-56fea2.netlify.app/${token}">here</a> to reset your password</p>
             <p>If this is not you than plese ignore this Email and donot share this Email</p>
         </div>
     </div>`
