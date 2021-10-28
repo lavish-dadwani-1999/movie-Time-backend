@@ -270,7 +270,7 @@ router.post("/forgotPasswordByEmail/:email", async (req,res)=>{
      " >
         <h1>Movie Times </h1>
         <div style="font-size: 20px;">
-            <p>Hello ${user.name} a password reset link is genrated from your account Click <a href="https://awesome-saha-56fea2.netlify.app/${token}">here</a> to reset your password</p>
+            <p>Hello ${user.name} a password reset link is genrated from your account Click <a href="https://zealous-joliot-a2d408.netlify.app/${token}">here</a> to reset your password</p>
             <p>If this is not you than plese ignore this Email and donot share this Email</p>
         </div>
     </div>`
