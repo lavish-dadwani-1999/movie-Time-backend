@@ -115,15 +115,17 @@ router.patch("/user/update",upload.single("fileUpload"),Auth, async (req,res)=>{
 
 router.post("/user/emailVerification/:email/:token", async (req,res)=>{
   try{
+    console.log("run")
     const email = req.params.email
     const token = req.params.token
     const user = await User.findOne({ email:email})
+    // console.log(user)
     if(!user)return res.status(404).send({message:"Email Required"})
     let html = `<h1>Welcome To Star App</h1>
     <p>Thanks For Creating An Account.  Click <a href="https://movie2time.herokuapp.com/user/verifyEmail/${token}">here</a> To Confirm Your Account.</p>
     <p> or copy paste this link https://movie2time.herokuapp.com/user/verifyEmail/${token}</p>
    `
-   sendMailToUser(user.email,"Confirm Email",html)
+    sendMailToUser(user.email,"Confirm Email",html)
    res.status(200).send({message:`Email verification link Has been sent to ${user.email} `})
   }catch(err){
     res.status(500).send("server error")
