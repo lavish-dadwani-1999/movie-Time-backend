@@ -3,6 +3,7 @@ const dotenv = require("dotenv")
 dotenv.config({path:".env"})
 const {GOOGLE_PASS,GOOGLE_USERNAME} = process.env
 const transportOptions = {
+
     host: "smtp.gmail.com",
     port:465,
     secure:true,
