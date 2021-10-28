@@ -16,7 +16,7 @@ router.get("/allMovies",async (req,res)=>{
     }
 })
 
-router.get("/moviesByPage",Auth, async(req,res)=>{
+router.get("/moviesByPage", async(req,res)=>{
     try {
         const page = req.query.page 
         const limit = req.query.limit
@@ -28,7 +28,7 @@ router.get("/moviesByPage",Auth, async(req,res)=>{
     }
 })
 
-router.get("/movies/marvel",Auth, async(req,res)=>{
+router.get("/movies/marvel", async(req,res)=>{
     try {
         const page = req.query.page 
         const limit = req.query.limit
@@ -119,7 +119,7 @@ router.get("/moviesFree", async (req,res)=>{
     }
 })
 
-router.get("/movie/:movieId", async (req,res)=>{
+router.get("/movie/:movieId", Auth, async (req,res)=>{
     try{
         const movieId = req.params.movieId
         const movies = await Movie.findById(movieId)
