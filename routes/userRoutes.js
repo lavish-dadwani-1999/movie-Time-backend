@@ -21,10 +21,11 @@ router.post(
 ],
   async (req, res) => {
     const errors = validationResult(req);
-    console.log(req.body);
+    
 
     if (!errors.isEmpty()) {
-      return res.status(422).jsonp(errors.array())}
+      let err = errors.array()
+      return res.status(422).json({message:err[0].msg})}
     try {
       const { email, password, name  } = req.body;
       if (!name || !email || !password)return res.send('Enter All Fields');
@@ -54,7 +55,8 @@ router.post(
     }
   }
 );
-// .matches(/\d/)d
+// .matches(/\d/)d 
+
 
 router.post("/user/login", async (req,res)=>{
   try{
@@ -74,8 +76,16 @@ router.post("/user/login", async (req,res)=>{
 
 
 // login user can change the password 
-router.patch("/user/changePassword",Auth, async (req,res)=>{
+router.patch("/user/changePassword",Auth,
+[check("newpassword").not().isEmpty().isLength({min:8}).withMessage("Enter a Valid Password"),
+check("oldpassword").not().isEmpty().isLength({min:8}).withMessage("Enter a Valid Password")
+]
+, async (req,res)=>{
   try{
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      let err = errors.array()
+      return res.status(422).json(err[0].msg)}
     const user = req.user
     const {newpassword , oldpassword} = req.body
     if(!newpassword || !oldpassword) return res.status(404).send({message:"invalid credentials"})
@@ -184,31 +194,31 @@ function LoggedIn  (req,res,next){
 req.user ? next() : res.status(401).send({message:"google error"})
 }
 
-router.get("/user/googleLogin",  async (req,res)=>{
+router.post("/user/googleLogin",  async (req,res)=>{
     try{
-      const googleUser = await req.user
+      const googleUser =  req.body.responce
       console.log(googleUser)
-      const user = await User.find({ googleId:googleUser.id})
+      const user = await User.findOne({ googleId:googleUser.googleId})
       console.log(user,"user")
-      if(user.length>0){
-        const token1 = await user[0].genrateToken()
-        res.status(201).json({user:user[0],token1})
+      if(user){
+        const token1 = await user.genrateToken()
+         return res.status(201).json({user:user})
       
       }else{
         const currentUser = {
-          name:`${googleUser.name.givenName} ${googleUser.name.familyName}`,
-          email:googleUser.emails[0].value,
-          photo:googleUser.photos[0].value,
+          name:`${googleUser.profileObj.name} `,
+          email:googleUser.profileObj.email,
+          photo:googleUser.profileObj.imageUrl,
           isThirdParty:true,
           password:"null",
-          googleId:googleUser.id,
-          isConfirmed:googleUser.email_verified ? true : false
+          googleId:googleUser.googleId,
+          isConfirmed:true
         }
         const user1 = new User({...currentUser})
         const token = await user1.genrateToken()
         // const watchList = new WatchList({userId:user1._id})
         // await watchList.save()
-        res.status(201).json({user:user1,token})
+        res.status(201).json({user:user1})
       }
     }catch(err){
       console.log(err)

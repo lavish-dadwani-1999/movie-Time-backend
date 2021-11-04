@@ -11,6 +11,18 @@ const razorpay = new Razorpay({
   key_secret: RAZORPAY_Key_Secret,
 });
 
+router.get("/user/userSubcription" , Auth, async (req,res)=>{
+  try{
+    const user = req.user
+    const subcription = await  Subcription.findOne({userId:user._id})
+    if(!subcription) return res.status(400).send({message:"subcription not found"})
+    else return res.status(200).json(subcription)
+  }catch(err){
+    res.send(err);
+    console.log(err);
+  }
+})
+
 router.post('/user/subcription', Auth, async (req, res) => {
   try {
     const user = req.user;
@@ -64,11 +76,16 @@ router.post('/user/paymentSuccess', Auth, async (req, res) => {
             planStart:new Date(),
             planEnd:payment.plan === "MONTHLY" ? new Date(Date.now() + 2678400000) : new Date(Date.now() + 31536000000),
         }
+        let days = null
+        if(payment.plan === "MONTHLY"){
+          days = "30d"
+        }else {days = "365d"}
         const subcription = await Subcription.create(obj)
         console.log(subcription)
         await subcription.save()
         const user1 = await User.findOne({_id:user._id})
-        const token = user.subcriptionToken()
+      
+        const token = user.subcriptionToken(days)
     res.status(200).send({ message: 'payment done successfuly ', status: 200 });
     }
   } catch (err) {

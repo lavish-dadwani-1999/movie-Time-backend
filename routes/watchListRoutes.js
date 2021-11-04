@@ -57,6 +57,7 @@ router.delete("/user/removeWatchList/:movieId", Auth, async (req,res)=>{
         res.status(201).send({message:"watchList deleted"})
     }catch(err){
         console.log(err)
+        if(err)return res.status(500).send({message:"server error"})
     }
 })
 

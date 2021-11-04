@@ -79,11 +79,11 @@ UserSchema.methods.genrateToken = async function () {
     console.log(err);
   }
 };
-UserSchema.methods.subcriptionToken = async function () {
+UserSchema.methods.subcriptionToken = async function (days) {
   try {
     const user = this;
     const SecretKey = `${user.email}-${new Date(user.createdAt).getTime()}`;
-    const token1 = await sign({ id: user._id }, SecretKey, { expiresIn: '1d' });
+    const token1 = await sign({ id: user._id }, SecretKey, { expiresIn: days });
     user.subscribeToken = token1;
     user.isSubscribe = true
     await user.save();
