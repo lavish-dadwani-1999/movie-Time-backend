@@ -71,7 +71,7 @@ UserSchema.methods.genrateToken = async function () {
   try {
     const user = this;
     const SecretKey = `${user.email}-${new Date(user.createdAt).getTime()}`;
-    const token1 = await sign({ id: user._id }, SecretKey, { expiresIn: '1d' });
+    const token1 = await sign({ id: user._id }, SecretKey, { expiresIn: '30d' });
     user.token = token1;
     await user.save();
     return token1;

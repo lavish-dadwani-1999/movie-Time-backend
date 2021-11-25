@@ -22,7 +22,7 @@ router.post("/user/addToWatchList", Auth, async (req,res)=>{
         // console.log(req.body)
         if(!movieId || !movieObj) return res.status(404).send({message:"filed required",status:404})
         const user = req.user
-        const find = await WatchList.findOne({movieId:movieId})
+        const find = await WatchList.findOne({movieId:movieId,userId:user._id})
         console.log(find)
         if(find != null) return res.status(404).send({message:"movie already added"})
         else {

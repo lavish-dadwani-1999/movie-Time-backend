@@ -6,7 +6,7 @@ const Auth = async function (req, res, next) {
     // console.log("auth",authtoken)
     if (authtoken) {
       const user = await User.findOne({ token: authtoken });
-      if (!user) return res.status(402).send('invalid Credentials');
+      if (!user) return res.status(402).send('invalid Credentials middle');
       req.user = user;
       let SecretKey = `${user.email}-${new Date(user.createdAt).getTime()}`;
       if (user.subscribeToken != null) {
